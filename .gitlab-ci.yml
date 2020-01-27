@@ -1,0 +1,73 @@
+stages:
+    - build
+    - unitTests
+    - test
+
+before_script:
+  - /opt/QtCreator/bin/qbs-setup-toolchains --detect
+
+linux:
+  tags:
+    - seminars
+  stage: build
+  
+  script: 
+    - /opt/QtCreator/bin/qbs -f FSM_comment_remover.qbs profile:gcc qbs.installRoot:. config:linux qbs.defaultBuildVariant:debug
+
+  cache:
+    paths:
+      - bin/FSM_comment_remover
+      - bin/tests
+    
+  artifacts:
+    paths:
+      - bin/FSM_comment_remover
+      - bin/tests
+    when: always
+
+win:
+  tags:
+    - seminars
+
+  stage: build
+
+  script:
+    - /opt/QtCreator/bin/qbs -f FSM_comment_remover.qbs profile:i686-w64-mingw32.static qbs.installRoot:. config:win qbs.defaultBuildVariant:debug
+
+  artifacts:
+    paths:
+      - bin/FSM_comment_remover.exe
+      - bin/tests.exe
+
+unitTesting:
+  tags:
+    - seminars
+  stage: unitTests
+  
+  script:
+    - bin/tests /home/gitlab-runner/ADS2019/task11/input1.txt /home/gitlab-runner/ADS2019/task11/output1.txt > unitTestOutput.txt
+    - if [[ `cat unitTestOutput.txt` =~ ", 0 failures" ]];then exit 0;else exit 1;fi
+    
+  artifacts:
+    paths:
+      - unitTestOutput.txt
+    when: always
+      
+test1:
+  tags:
+    - seminars
+  stage: test
+  
+  script: 
+    - valgrind --log-file=valgrindOutput1.txt bin/FSM_comment_remover < /home/gitlab-runner/ADS2019/task11/input1.txt > output1.txt
+    #- /home/gitlab-runner/ADS2019/task11/task11 < /home/gitlab-runner/ADS2019/task11/input1.txt > outputRef1.txt
+    #- diff output1.txt outputRef1.txt > diffOutput1.diff
+    - if [[ `cat valgrindOutput1.txt` =~ "no leaks are possible" ]];then exit 0;else exit 1;fi
+    
+  artifacts:
+    paths:
+      - output1.txt
+      #- diffOutput1.diff
+      - valgrindOutput1.txt
+    when: always
+    
