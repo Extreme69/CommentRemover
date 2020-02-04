@@ -17,7 +17,6 @@ int main(int argc, char* argv[]) {
 
   // Checks if files were loaded correctly
   if (input != NULL && output != NULL) {
-    printf("Input and output defined successfully. Code\n");
     Functions_RemoveNotes(input, output);
 
     // Closes input/output streams
