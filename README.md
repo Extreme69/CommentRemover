@@ -23,7 +23,7 @@ V adresáří test_files najdete vzorový výstup.
 Aby bylo možné spustit jednotkové testy z Qt Creatoru, je nutné přidat vstupní parametry do nastavení projektu.
 Následující obrázek ukazuje postup pro nastavení.
 
-![qt run settings](doc/run_parameters.jpg)
+![qt run settings](docs/run_parameters.jpg)
 
 1. Přepneme se do nastavení projektu
 2. Pod námi používanou konfigurací projektu zvolíme položku **"Run"**
@@ -60,7 +60,7 @@ You can find sample output in the test_files directory.
 Te be able to run unit tests from Qt Creator, we need to update run configuration settings inside Qt Creator.
 Following picture shows steps for configuring Qt Creator.
 
-![qt run settings](doc/run_parameters.jpg)
+![qt run settings](docs/run_parameters.jpg)
 
 1. Switch to project settings
 2. Under Build & Run select **"Run"** settings
