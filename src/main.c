@@ -20,8 +20,12 @@ int main(int argc, char* argv[]) {
     Functions_RemoveNotes(input, output);
 
     // Closes input/output streams
-    fclose(input);
-    fclose(output);
+    if (input != stdin) {
+      fclose(input);
+    }
+    if (output != stdout) {
+      fclose(output);
+    }
   } else
     printf("Input or output was not defined properly\n");
 
