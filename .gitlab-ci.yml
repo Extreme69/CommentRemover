@@ -52,7 +52,7 @@ unitTesting:
   allow_failure: true
   
   script:
-    - $BINARY_PATH/tests $INPUT_FILE_PATH/input1.txt $INPUT_FILE_PATH/output1.txt > unitTestOutput.txt
+    - $BINARY_PATH/tests $INPUT_FILE_PATH/input1.txt output1.txt $INPUT_FILE_PATH/expectedOutput1.txt | tee unitTestOutput.txt
     - if [[ `cat unitTestOutput.txt` =~ ", 0 failures" ]];then exit 0;else exit 1;fi
     
   artifacts:
@@ -66,8 +66,8 @@ test1:
   stage: test
   
   script: 
-    - valgrind --log-file=valgrindOutput1.txt $BINARY_PATH/$PROJECT_NAME < $INPUT_FILE_PATH/input1.txt > output1.txt
-    - diff output1.txt $INPUT_FILE_PATH/output1.txt > diffOutput1.diff
+    - valgrind --log-file=valgrindOutput1.txt $BINARY_PATH/$PROJECT_NAME < $INPUT_FILE_PATH/input1.txt | tee output1.txt
+    - diff output1.txt $INPUT_FILE_PATH/expectedOutput1.txt > diffOutput1.diff
     - if [[ `cat valgrindOutput1.txt` =~ "no leaks are possible" ]];then exit 0;else exit 1;fi
     
   artifacts:
