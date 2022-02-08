@@ -22,7 +22,7 @@ static struct Config* handleCommandLine(int argc, char** argv,
 
 int main(int argc, char* argv[]) {
   struct Config cfg;
-  if (handleCommandLine(argc - 1, ++argv, &cfg) == NULL) {
+  if (handleCommandLine(argc, argv, &cfg) == NULL) {
     return -1;
   }
 
