@@ -1,15 +1,23 @@
-/**
- * @file       FSM.h
- * @author     Horak, Jurena
- * @date       2019.6
- * @brief      Header file defining functions for functions.c file
+/*!
+ * \file       FSM.h
+ * \author     Horak, Jurena
+ * \date       2019.6
+ * \brief      Header file defining functions for functions.c file
  * ******************************************
- * @par       COPYRIGHT NOTICE (c) 2019 TBU in Zlin. All rights reserved.
+ * \attention
+ * &copy; Copyright (c) 2022 FAI UTB. All rights reserved.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
  */
 
 #ifndef _FSM_H_
 #define _FSM_H_
-
+/*! \defgroup FSM Finite State Machine
+ *  \brief    Module that implements the Mealy machine to remove the comments
+ * from the C sources
+ *  \{
+ */
 /*Private includes: ---------------------------------------------------------*/
 #include <stdbool.h>
 #include <stdio.h>
@@ -29,4 +37,5 @@
  */
 void FSM_RemoveNotes(FILE* input, FILE* output);
 
+/*! \} */
 #endif

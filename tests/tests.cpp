@@ -1,8 +1,8 @@
-/**
- * @file       tests.cpp
- * @author     Jurena
- * @date       7. 2. 2022
- * @brief      Unit tests for FSM module.
+/*!
+ * \file       tests.cpp
+ * \author     Jurena
+ * \date       7. 2. 2022
+ * \brief      Unit tests for FSM module.
  * ******************************************
  * \attention
  * &copy; Copyright (c) 2022 FAI UTB. All rights reserved.

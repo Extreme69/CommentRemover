@@ -1,10 +1,14 @@
-/**
- * @file       FSM.c
- * @author     Horak, Jurena
- * @date       2019.6
- * @brief      Implementation of function.h header file
+/*!
+ * \file       FSM.c
+ * \author     Horak, Jurena
+ * \date       2019.6
+ * \brief      Implementation of function.h header file
  * ******************************************
- * @par       COPYRIGHT NOTICE (c) 2019 TBU in Zlin. All rights reserved.
+ * \attention
+ * &copy; Copyright (c) 2022 FAI UTB. All rights reserved.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
  */
 /* Includes ------------------------------------------------------------------*/
 #include "FSM.h"
