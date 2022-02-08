@@ -1,4 +1,4 @@
-/* This is a test file for Mealys automat removing comments */
+/* This is a test file for Mealy machine removing comments */
 
 #include <stdio.h>
 
@@ -14,10 +14,9 @@ int main( int argc, char **argv )
 	const char* text3 = "This is a \" inside text with odd number ' "; /* multiline comment
 	after text */
 	
-	char ch = '//';
-	char ch2 = '"';
-	char ch3 = '\''; // comment after character
-	char ch4 = '\\'; /* multiline comment
+	char ch = '"';
+	char ch2 = '\''; // comment after character
+	char ch3 = '\\'; /* multi-line comment
 	after character */
 	
 	double val = 10 / 2;
