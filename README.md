@@ -1,72 +1,96 @@
 #  Zpracování textů - konečný automat
-Naprogramujte **konečný Mealyho automat**, který ze vstupního souboru v jazyce C/C++ odstraní poznámky (tzn. vše mezi znaky /* */ nebo // \n).
+Naprogramujte **konečný Mealyho automat**, který ze vstupního souboru v jazyce C/C++ odstraní poznámky (tzn. vše mezi znaky `/* */` nebo `// \n`).
 
-## Ošetření vstupů
-- puts("Toto je řetězec //a toto ani /* toto */ neni poznámka");
-- putchar('"'); /* Toto byl znak uvozovky, ne řetězec. Takže toto je poznámka */
-- backslash: puts ("Toto \" je stále řetězec"); // to samé platí i pro znakové konstanty  v apostrofech: _'\''_
+## Příklad vstupního souboru a odpovídající výstup
 
-## Vstup programu
-- soubor zadaný jako 1. parametr na příkazové řádce
-- standardní vstup (stdin), pokud parametr není zadán
+### Vstup
+```c
+/* This is a test file for Mealy machine removing comments */
 
-## Výstup programu
-- do souboru, který byl zadán jako 2. parametr na příkazové řádce
-- na standardní výstup (stdout), pokud 2. parametr není zadán
+#include <stdio.h>
 
-Pokud je na příkazové řádce pouze 1 parametr, bere se tento parametr jako jméno vstupního souboru.
+/*! 
+ * \brief Doxygen comment
+ */
+int main( int argc, char **argv )
+{
+	// One-line comment
+	
+	const char* text = "This is a /* comment */ inside 'text'";
+	const char* text2 = "This is a // comment inside text"; // comment after text
+	const char* text3 = "This is a \" inside text with odd number ' "; /* multiline comment
+	after text */
+	
+	char ch = '"';
+	char ch2 = '\''; // comment after character
+	char ch3 = '\\'; /* multi-line comment
+	after character */
+	
+	double val = 10 / 2;
+	
+	return 0;
+}
+```
 
-V adresáří test_files najdete vzorový výstup.
+### Výstup
 
-## Nastavení pro lokální spouštení jednotkových testů v Qt Creator
+```c
 
-Aby bylo možné spustit jednotkové testy z Qt Creatoru, je nutné přidat vstupní parametry do nastavení projektu.
-Následující obrázek ukazuje postup pro nastavení.
 
-![qt run settings](docs/run_parameters.jpg)
+#include <stdio.h>
 
-1. Přepneme se do nastavení projektu
-2. Pod námi používanou konfigurací projektu zvolíme položku **"Run"**
-3. Z výběru vybereme konfiguraci pro jednotkové testy **"tests"**
-4. Jako argumenty pro spouštění jednotkových testů nastavíme 3 soubory `input1.txt output1.txt exampleOutput1.txt`
-   a pracovní složku nastavíme na hodnotu: `%{ActiveProject:Path}/test_files`
-   
-Podobné nastavení můžeme provést i pro konfiguraci **FSM_comment_remover** kde jako vstupní argument nastavíme `input1.txt` a nastavení pracovní 
-složky zůstane stejné jako v bodě 4.
+
+int main( int argc, char **argv )
+{
+	
+	
+	const char* text = "This is a /* comment */ inside 'text'";
+	const char* text2 = "This is a // comment inside text"; 
+	const char* text3 = "This is a \" inside text with odd number ' "; 
+	
+	char ch = '"';
+	char ch2 = '\''; 
+	char ch3 = '\\'; 
+	
+	double val = 10 / 2;
+	
+	return 0;
+}
+
+```
+
+## Spuštění programu
+
+Program může být spuštěn s variabilním počtem argumentů. Obecné volání vypadá následovně: `./FSM_CommentRemover [input.c] [output.c]`
+
+V předchozím příkladu jsou oba argumenty nepovinné a pokud nejsou uvedeny, tak je použit standardní vstup a výstup (stdin a stdout). Pokud je uveden pouze jeden argument, bude použit jako vstupní soubor, ve kterém budou poznámky odstraněny, a výstup bude zapsán na standardní výstup. Jestliže budou zadány argumenty dva, tak je druhý z nich použit jako výstupní soubor, kam je zapsán zpracovaný soubor. Pokud je argumentů více než dva, tak je zbytek ignorován.
+
+## Návratová hodnota
+
+Program vrací na svém výstupu hodnotu **0** pokud nedojde k chybě, hodnotu **-1** při detekci chyby.
+
+## Testovací soubory
+
+V adresáři **test_files** najdete sadu vstupních souborů a jejich výstupů.
 
 ---
-#  Text processing - finite automaton
-Program **finite Mealy automaton**, which removes the notes (ie everything between / * * / or // \ n) from the C / C ++ input file.
+#  Text processing - finite machine
+Program **finite Mealy machine**, which removes the notes (i.e. everything between `/* */` or `// \n`) from the C / C++ input file.
 
-## Input treatment
-- puts ("This is // and this or /* this */ is not a comment"); 
-- putchar ('"'); /* This was a quotation mark, not a string. So this is a note */
-- backslash: puts ("This \" is still a string "); // the same applies to character constants in apostrophes: _'\''_
+## Example of input and coresponding output 
 
-## Program input
-- File specified as the 1st parameter on the command line
-- standard input (stdin) if parameter is not specified
+See [czech version](#příklad-vstupního-souboru-a-odpovídající-výstup)
 
-## Program output
-- to a file that was specified as the second command line parameter
-- to standard output (stdout) if parameter 2 is not specified
+## Running the program
 
-If there is only one parameter on the command line, it is taken as the name of the input file.
+The program can be run with a variable number of arguments. A general call looks like this: `./FSM_CommentRemover [input.c] [output.c]`
 
-You can find sample output in the test_files directory.
+In the previous example, both arguments are optional, and if they are not specified, the standard input and output (stdin and stdout) are used. If only one argument is given, it will be used as the input file in which the notes will be removed, and the output will be written to standard output. If two arguments are given, the second one is used as the output file where the processed file is written. If there are more than two arguments, the rest are ignored.
 
-## Settings for running unit tests locally in Qt Creator
+## Exit status
 
-Te be able to run unit tests from Qt Creator, we need to update run configuration settings inside Qt Creator.
-Following picture shows steps for configuring Qt Creator.
+The program returns **0** on its output if no error occurs, **-1** if an error is detected.
 
-![qt run settings](docs/run_parameters.jpg)
+## Test files
 
-1. Switch to project settings
-2. Under Build & Run select **"Run"** settings
-3. From run configuration dropdown menu select **"tests"**
-4. Set following 3 files `input1.txt output1.txt exampleOutput1.txt` as command line arguments and working directory has to be set to this value:
-   `%{ActiveProject:Path}/test_files`
-
-Same configuration can be done for run configuration **FSM_comment_remover** where input arguments should be set to `input1.txt` and working 
-directory should be the same as in item 4 from previous list.
+In the **test_files** directory you will find a set of input files and their outputs.
