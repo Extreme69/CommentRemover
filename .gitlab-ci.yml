@@ -4,12 +4,16 @@ stages:
     - test
 
 variables:
-  PROJECT_NAME: "FSM_comment_remover"
+  PROJECT_NAME: "app"
   BINARY_PATH: "bin"
+  TESTS_NAME: "tests"
   INPUT_FILE_PATH: "/home/gitlab-runner/ADS/FSM_comment_remover"
 
-before_script:
-  - /opt/QtCreator/bin/qbs-setup-toolchains --detect
+cache: &global_cache
+  key: assets
+  paths:
+    - $BINARY_PATH/test_files
+  policy: pull-push
 
 linux:
   tags:
@@ -17,17 +21,18 @@ linux:
   stage: build
   
   script: 
-    - /opt/QtCreator/bin/qbs -f $PROJECT_NAME.qbs profile:gcc qbs.installRoot:. config:linux qbs.defaultBuildVariant:debug
+    - cmake CMakeLists.txt
+    - make
 
   cache:
-    paths:
-      - $BINARY_PATH/$PROJECT_NAME
-      - $BINARY_PATH/tests
+    <<: *global_cache
+    policy: push
+
     
   artifacts:
     paths:
       - $BINARY_PATH/$PROJECT_NAME
-      - $BINARY_PATH/tests
+      - $BINARY_PATH/$TESTS_NAME
     when: always
 
 win:
@@ -38,42 +43,58 @@ win:
   allow_failure: true
 
   script:
-    - /opt/QtCreator/bin/qbs -f $PROJECT_NAME.qbs profile:i686-w64-mingw32.static qbs.installRoot:. config:win qbs.defaultBuildVariant:debug
+    - i686-w64-mingw32.static-cmake CMakeLists.txt
+    - make
 
   artifacts:
     paths:
       - $BINARY_PATH/$PROJECT_NAME.exe
-      - $BINARY_PATH/tests.exe
+      - $BINARY_PATH/$TESTS_NAME.exe
+
+  cache: {} # disable cache
 
 unitTesting:
   tags:
     - seminars
   stage: unitTests
-  allow_failure: true
+
+  variables:
+    UT_NAME: "unitTestOutput.txt"
   
   script:
-    - $BINARY_PATH/tests $INPUT_FILE_PATH/input1.txt output1.txt $INPUT_FILE_PATH/expectedOutput1.txt | tee unitTestOutput.txt
-    - if [[ `cat unitTestOutput.txt` =~ ", 0 failures" ]];then exit 0;else exit 1;fi
+    - cd $BINARY_PATH
+    - ./$TESTS_NAME | tee $UT_NAME
+    - ! grep -q "FAILED TESTS" $UT_NAME
     
   artifacts:
     paths:
-      - unitTestOutput.txt
+      - $BINARY_PATH/$UT_NAME
     when: always
+
+  cache:
+    <<: *global_cache
+    policy: pull
       
-test1:
+integrationTest1:
   tags:
     - seminars
   stage: test
   
-  script: 
-    - valgrind --log-file=valgrindOutput1.txt $BINARY_PATH/$PROJECT_NAME < $INPUT_FILE_PATH/input1.txt | tee output1.txt
-    - diff output1.txt $INPUT_FILE_PATH/expectedOutput1.txt > diffOutput1.diff
-    - if [[ `cat valgrindOutput1.txt` =~ "no leaks are possible" ]];then exit 0;else exit 1;fi
+  script:
+    - cd $BINARY_PATH
+    - valgrind --log-file=valgrindOutput1.txt ./$PROJECT_NAME < $INPUT_FILE_PATH/input1.txt | tee output1.txt
+    - diff output1.txt $INPUT_FILE_PATH/expectedOutput1.txt | tee diffOutput1.diff
+    - ! grep -q "no leaks are possible" valgrindOutput1.txt
+    - cmp output1.txt $INPUT_FILE_PATH/expectedOutput1.txt
     
   artifacts:
     paths:
-      - output1.txt
-      - diffOutput1.diff
-      - valgrindOutput1.txt
+      - $BINARY_PATH/output1.txt
+      - $BINARY_PATH/diffOutput1.diff
+      - $BINARY_PATH/valgrindOutput1.txt
     when: always
+    
+  cache:
+    <<: *global_cache
+    policy: pull
     
