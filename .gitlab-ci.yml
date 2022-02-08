@@ -64,7 +64,7 @@ unitTesting:
   script:
     - cd $BINARY_PATH
     - ./$TESTS_NAME | tee $UT_NAME
-    - ! grep -q "FAILED TESTS" $UT_NAME
+    - (! grep -q "FAILED TESTS" $UT_NAME)
     
   artifacts:
     paths:
@@ -84,7 +84,7 @@ integrationTest1:
     - cd $BINARY_PATH
     - valgrind --log-file=valgrindOutput1.txt ./$PROJECT_NAME < $INPUT_FILE_PATH/input1.txt | tee output1.txt
     - diff output1.txt $INPUT_FILE_PATH/expectedOutput1.txt | tee diffOutput1.diff
-    - ! grep -q "no leaks are possible" valgrindOutput1.txt
+    - grep -q "no leaks are possible" valgrindOutput1.txt
     - cmp output1.txt $INPUT_FILE_PATH/expectedOutput1.txt
     
   artifacts:
@@ -97,4 +97,3 @@ integrationTest1:
   cache:
     <<: *global_cache
     policy: pull
-    

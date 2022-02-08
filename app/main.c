@@ -43,12 +43,12 @@ static struct Config* handleCommandLine(int argc, char** argv,
   cfg->input = stdin;
   cfg->output = stdout;
 
-  if (argc > 0) {
-    cfg->input = fopen(argv[0], "r");
+  if (argc > 1) {
+    cfg->input = fopen(argv[1], "r");
   }
 
-  if (argc > 1) {
-    cfg->output = fopen(argv[1], "w");
+  if (argc > 2) {
+    cfg->output = fopen(argv[2], "w");
   }
 
   if (cfg->input == NULL || cfg->output == NULL) {
