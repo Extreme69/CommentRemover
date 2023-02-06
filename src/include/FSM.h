@@ -19,10 +19,7 @@
  *  \{
  */
 /*Private includes: ---------------------------------------------------------*/
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 /*Private defines: ----------------------------------------------------------*/
 /*!
@@ -32,7 +29,7 @@
  *
  * \param[in] input   Pointer to input stream. The stream shall be opened for
  * reading.
- * \param[in] output  Pointer to the output stream. It is expected that
+ * \param[in,out] output  Pointer to the output stream. It is expected that
  * the file is opened for writting.
  */
 void FSM_RemoveNotes(FILE* input, FILE* output);
